@@ -1,0 +1,28 @@
+version: '3'
+services:
+  web:
+    build: .docker
+    ports:
+      - "8088:80"
+    volumes:
+      - ~/.composer-docker/cache:/root/.composer/cache
+      - .:/var/www/html
+    depends_on:
+      - mongodb
+
+  mongodb:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: password
+      MONGODB_USERNAME: cordial-api
+      MONGODB_PASSWORD: password
+      MONGO_INITDB_DATABASE: cordial
+    volumes:
+      - ./.docker/dbdata:/data/db
+
+volumes:
+  dbdata:
+    driver: local
